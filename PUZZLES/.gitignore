@@ -1,0 +1,5 @@
+node_modules/
+server/config.private.js
+server/attempts.log
+*.log
+.DS_Store

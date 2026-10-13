@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reroute the Reactor // Diagnostic Array</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="reactor-shell">
+    <!-- Team Code Authentication Overlay (In-Memory Only) -->
+    <div class="team-auth-overlay" id="team-auth-overlay">
+      <div class="auth-panel">
+        <div class="auth-title">REACTOR TERMINAL ACCESS</div>
+        <p class="auth-desc">Enter your authorized Team Code (e.g. <strong>K2</strong> or <strong>M5</strong>) to initialize core telemetry:</p>
+        <div class="auth-input-group">
+          <input type="text" id="team-code-input" class="team-code-input" placeholder="CODE" maxlength="8" autocomplete="off" spellcheck="false">
+          <button id="btn-auth-team" class="hud-btn primary">CONNECT</button>
+        </div>
+        <div class="auth-error" id="auth-error"></div>
+      </div>
+    </div>
+
+    <!-- Header Status & Telemetry -->
+    <header class="reactor-header">
+      <div class="header-title-group">
+        <h1>REROUTE THE REACTOR</h1>
+        <span class="sub-label">TELEMETRY DECRYPTION ARRAY</span>
+      </div>
+      <div class="header-status">
+        <span class="round-telemetry-badge" id="round-indicator">ROUND 1 OF 3</span>
+        <span class="penalty-badge hidden" id="penalty-badge">+2:00 PENALTY</span>
+        <div class="status-beacon"></div>
+        <span id="team-status-label">INITIALIZING</span>
+      </div>
+    </header>
+
+    <!-- Heat Map Monitor Panel -->
+    <section class="monitor-panel" id="monitor-panel">
+      <div class="monitor-telemetry">
+        <span id="matrix-spec-tag">MATRIX: 5x7 CATHODE</span>
+        <span class="state-text" id="state-text">SIGNAL LOCKED</span>
+      </div>
+
+      <!-- 5-column by 7-row Heat Map Grid -->
+      <div class="heatmap-grid" id="heatmap-grid" aria-label="Reactor Heat Map Grid">
+        <!-- 35 cells initialized by app.js -->
+      </div>
+    </section>
+
+    <!-- Mission Decryption & Letter Submission -->
+    <section class="submission-section" id="submission-section">
+      <div class="submission-header">
+        <span class="submission-title">CORE FREQUENCY DECRYPTION</span>
+        <span class="sub-label">TARGET SIGNAL IDENTIFIER</span>
+      </div>
+      <div class="submission-row">
+        <span class="letter-prompt">Which letter do you see?</span>
+        <input type="text" id="letter-input" class="letter-input" maxlength="1" placeholder="?" autocomplete="off" spellcheck="false" aria-label="Letter guess">
+        <button id="btn-submit-letter" class="hud-btn primary">SUBMIT LETTER</button>
+      </div>
+      <div class="feedback-message" id="feedback-message">
+        Awaiting initial frequency routing calibration...
+      </div>
+    </section>
+
+    <!-- 3 Vertical Levers Panel -->
+    <section class="levers-section" id="levers-section">
+      <div class="levers-header">
+        <span class="levers-title">CORE LEVER ROUTING</span>
+        <span class="levers-telemetry" id="levers-summary">A:0 | B:0 | C:0</span>
+      </div>
+
+      <div class="levers-row">
+        <!-- Lever A -->
+        <div class="lever-unit" data-lever-index="0" id="lever-unit-0">
+          <span class="lever-tag">LEVER A</span>
+          <span class="lever-val-badge" id="lever-badge-0">POS: 0</span>
+          <div class="lever-assembly" id="lever-assembly-0">
+            <div class="lever-slot"></div>
+            <div class="lever-notches">
+              <div class="lever-notch" data-notch="3"><span class="notch-tick"></span><span class="notch-label">3</span></div>
+              <div class="lever-notch" data-notch="2"><span class="notch-tick"></span><span class="notch-label">2</span></div>
+              <div class="lever-notch" data-notch="1"><span class="notch-tick"></span><span class="notch-label">1</span></div>
+              <div class="lever-notch active" data-notch="0"><span class="notch-tick"></span><span class="notch-label">0</span></div>
+            </div>
+            <div class="lever-handle" id="lever-handle-0" tabindex="0" role="slider" aria-label="Lever A" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0"></div>
+          </div>
+        </div>
+
+        <!-- Lever B -->
+        <div class="lever-unit" data-lever-index="1" id="lever-unit-1">
+          <span class="lever-tag">LEVER B</span>
+          <span class="lever-val-badge" id="lever-badge-1">POS: 0</span>
+          <div class="lever-assembly" id="lever-assembly-1">
+            <div class="lever-slot"></div>
+            <div class="lever-notches">
+              <div class="lever-notch" data-notch="3"><span class="notch-tick"></span><span class="notch-label">3</span></div>
+              <div class="lever-notch" data-notch="2"><span class="notch-tick"></span><span class="notch-label">2</span></div>
+              <div class="lever-notch" data-notch="1"><span class="notch-tick"></span><span class="notch-label">1</span></div>
+              <div class="lever-notch active" data-notch="0"><span class="notch-tick"></span><span class="notch-label">0</span></div>
+            </div>
+            <div class="lever-handle" id="lever-handle-1" tabindex="0" role="slider" aria-label="Lever B" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0"></div>
+          </div>
+        </div>
+
+        <!-- Lever C -->
+        <div class="lever-unit" data-lever-index="2" id="lever-unit-2">
+          <span class="lever-tag">LEVER C</span>
+          <span class="lever-val-badge" id="lever-badge-2">POS: 0</span>
+          <div class="lever-assembly" id="lever-assembly-2">
+            <div class="lever-slot"></div>
+            <div class="lever-notches">
+              <div class="lever-notch" data-notch="3"><span class="notch-tick"></span><span class="notch-label">3</span></div>
+              <div class="lever-notch" data-notch="2"><span class="notch-tick"></span><span class="notch-label">2</span></div>
+              <div class="lever-notch" data-notch="1"><span class="notch-tick"></span><span class="notch-label">1</span></div>
+              <div class="lever-notch active" data-notch="0"><span class="notch-tick"></span><span class="notch-label">0</span></div>
+            </div>
+            <div class="lever-handle" id="lever-handle-2" tabindex="0" role="slider" aria-label="Lever C" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 Wires & 4 Sockets Patch Bay -->
+    <section class="patchbay-section" id="patchbay-section">
+      <div class="patchbay-header">
+        <span class="patchbay-title">CORE COUPLER // PATCH BAY</span>
+        <span class="patchbay-telemetry" id="wires-summary">W0:S0 | W1:S1 | W2:S2 | W3:S3</span>
+      </div>
+
+      <div class="patchbay-stage" id="patchbay-stage">
+        <!-- SVG Canvas for Curved Cables -->
+        <svg class="wires-canvas" id="wires-canvas" aria-hidden="true"></svg>
+
+        <!-- Left Terminals (4 Wires with Color & Shape) -->
+        <div class="wire-origins-col" id="wire-origins-col">
+          <!-- Wire 0: Cyan / Circle -->
+          <div class="wire-origin-slot" data-wire="0" id="wire-origin-0">
+            <span class="wire-origin-pin" style="--wire-color: #00e5ff;"></span>
+            <div class="wire-tag" style="--wire-color: #00e5ff;">
+              <span class="wire-icon" aria-label="Circle">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="currentColor"/></svg>
+              </span>
+              <span class="wire-name">W-0</span>
+            </div>
+            <div class="wire-plug" id="wire-plug-0" data-wire="0" style="--wire-color: #00e5ff;" tabindex="0" role="button" aria-label="Plug Wire 0 Circle">
+              <svg viewBox="0 0 24 24" class="plug-shape"><circle cx="12" cy="12" r="6" fill="currentColor"/></svg>
+            </div>
+          </div>
+
+          <!-- Wire 1: Amber / Triangle -->
+          <div class="wire-origin-slot" data-wire="1" id="wire-origin-1">
+            <span class="wire-origin-pin" style="--wire-color: #ffaa00;"></span>
+            <div class="wire-tag" style="--wire-color: #ffaa00;">
+              <span class="wire-icon" aria-label="Triangle">
+                <svg viewBox="0 0 24 24"><polygon points="12,5 20,19 4,19" fill="currentColor"/></svg>
+              </span>
+              <span class="wire-name">W-1</span>
+            </div>
+            <div class="wire-plug" id="wire-plug-1" data-wire="1" style="--wire-color: #ffaa00;" tabindex="0" role="button" aria-label="Plug Wire 1 Triangle">
+              <svg viewBox="0 0 24 24" class="plug-shape"><polygon points="12,5 20,19 4,19" fill="currentColor"/></svg>
+            </div>
+          </div>
+
+          <!-- Wire 2: Green / Square -->
+          <div class="wire-origin-slot" data-wire="2" id="wire-origin-2">
+            <span class="wire-origin-pin" style="--wire-color: #10b981;"></span>
+            <div class="wire-tag" style="--wire-color: #10b981;">
+              <span class="wire-icon" aria-label="Square">
+                <svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2" fill="currentColor"/></svg>
+              </span>
+              <span class="wire-name">W-2</span>
+            </div>
+            <div class="wire-plug" id="wire-plug-2" data-wire="2" style="--wire-color: #10b981;" tabindex="0" role="button" aria-label="Plug Wire 2 Square">
+              <svg viewBox="0 0 24 24" class="plug-shape"><rect x="5" y="5" width="14" height="14" rx="2" fill="currentColor"/></svg>
+            </div>
+          </div>
+
+          <!-- Wire 3: Violet / Diamond -->
+          <div class="wire-origin-slot" data-wire="3" id="wire-origin-3">
+            <span class="wire-origin-pin" style="--wire-color: #c084fc;"></span>
+            <div class="wire-tag" style="--wire-color: #c084fc;">
+              <span class="wire-icon" aria-label="Diamond">
+                <svg viewBox="0 0 24 24"><polygon points="12,3 21,12 12,21 3,12" fill="currentColor"/></svg>
+              </span>
+              <span class="wire-name">W-3</span>
+            </div>
+            <div class="wire-plug" id="wire-plug-3" data-wire="3" style="--wire-color: #c084fc;" tabindex="0" role="button" aria-label="Plug Wire 3 Diamond">
+              <svg viewBox="0 0 24 24" class="plug-shape"><polygon points="12,3 21,12 12,21 3,12" fill="currentColor"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Sockets (4 Sockets in Shuffled Order with Shape Icons) -->
+        <div class="sockets-col" id="sockets-col">
+          <!-- Socket 0: Diamond (Shuffled) -->
+          <div class="socket-slot" data-socket="0" data-shape="diamond" id="socket-slot-0">
+            <div class="socket-port" id="socket-port-0">
+              <div class="socket-ring"></div>
+            </div>
+            <div class="socket-info">
+              <span class="socket-icon" aria-label="Diamond">
+                <svg viewBox="0 0 24 24"><polygon points="12,3 21,12 12,21 3,12" fill="currentColor"/></svg>
+              </span>
+              <span class="socket-label">SKT 0</span>
+            </div>
+          </div>
+
+          <!-- Socket 1: Circle (Shuffled) -->
+          <div class="socket-slot" data-socket="1" data-shape="circle" id="socket-slot-1">
+            <div class="socket-port" id="socket-port-1">
+              <div class="socket-ring"></div>
+            </div>
+            <div class="socket-info">
+              <span class="socket-icon" aria-label="Circle">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="currentColor"/></svg>
+              </span>
+              <span class="socket-label">SKT 1</span>
+            </div>
+          </div>
+
+          <!-- Socket 2: Square (Shuffled) -->
+          <div class="socket-slot" data-socket="2" data-shape="square" id="socket-slot-2">
+            <div class="socket-port" id="socket-port-2">
+              <div class="socket-ring"></div>
+            </div>
+            <div class="socket-info">
+              <span class="socket-icon" aria-label="Square">
+                <svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2" fill="currentColor"/></svg>
+              </span>
+              <span class="socket-label">SKT 2</span>
+            </div>
+          </div>
+
+          <!-- Socket 3: Triangle (Shuffled) -->
+          <div class="socket-slot" data-socket="3" data-shape="triangle" id="socket-slot-3">
+            <div class="socket-port" id="socket-port-3">
+              <div class="socket-ring"></div>
+            </div>
+            <div class="socket-info">
+              <span class="socket-icon" aria-label="Triangle">
+                <svg viewBox="0 0 24 24"><polygon points="12,5 20,19 4,19" fill="currentColor"/></svg>
+              </span>
+              <span class="socket-label">SKT 3</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3-Level Tactical Hints Panel -->
+    <section class="hints-section" id="hints-section">
+      <div class="hints-header">
+        <span class="hints-title">DIAGNOSTIC ADVISORY ASSISTANCE</span>
+        <button id="btn-request-hint" class="hud-btn primary">REQUEST HINT (LEVEL 1)</button>
+      </div>
+      <div class="hints-log" id="hints-log">
+        Hints are on standby. Requesting Level 3 introduces a 2-minute penalty to mission completion.
+      </div>
+      <div class="hints-penalty-warning" id="hints-penalty-warning">
+        ⚠️ 2-MINUTE TIME PENALTY APPLIED FOR USING LEVEL 3 ASSISTANCE.
+      </div>
+    </section>
+
+    <!-- Victory Mission Accomplished Banner -->
+    <section class="victory-banner hidden" id="victory-banner">
+      <div class="victory-title">REACTOR FULLY CALIBRATED // CORES ALIGNED</div>
+      <div class="victory-word" id="suffix-word">SUFFIX RECOVERED: ---</div>
+      <p class="auth-desc">All three containment seals have been restored.</p>
+      <button id="btn-replay-mission" class="hud-btn primary">REPLAY MISSION</button>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
