@@ -1,0 +1,12 @@
+{
+  "name": "orb-signal-puzzle",
+  "version": "1.0.0",
+  "description": "Orb-Signal Morse Puzzle for School Scavenger Hunt",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node scripts/test-security.js"
+  },
+  "dependencies": {},
+  "type": "commonjs"
+}

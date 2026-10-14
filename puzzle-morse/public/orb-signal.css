@@ -1,0 +1,355 @@
+/* Orb-Signal Design System - Clean Modern Scavenger Hunt Aesthetics */
+:root {
+  --orb-bg: #f8fafc;
+  --orb-card-bg: #ffffff;
+  --orb-border: #e2e8f0;
+  --orb-text: #1e293b;
+  --orb-text-muted: #64748b;
+  --orb-primary: #0b6176;
+  --orb-primary-light: #e0f2f7;
+  --orb-wave-active: #b85012;
+  --orb-wave-dimmed: rgba(184, 80, 18, 0.24);
+  --orb-glow: rgba(11, 97, 118, 0.45);
+  --orb-flash: rgba(255, 255, 255, 0.9);
+  --orb-radius: 16px;
+  --orb-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --orb-bg: #0f172a;
+    --orb-card-bg: #1e293b;
+    --orb-border: #334155;
+    --orb-text: #f1f5f9;
+    --orb-text-muted: #94a3b8;
+    --orb-primary: #38bdf8;
+    --orb-primary-light: rgba(56, 189, 248, 0.15);
+    --orb-wave-active: #f97316;
+    --orb-wave-dimmed: rgba(249, 115, 22, 0.22);
+    --orb-glow: rgba(56, 189, 248, 0.5);
+    --orb-flash: rgba(255, 255, 255, 0.95);
+    --orb-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* Custom Element Host */
+orb-signal {
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--orb-text);
+  box-sizing: border-box;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+orb-signal *, orb-signal *::before, orb-signal *::after {
+  box-sizing: border-box;
+}
+
+/* Card Container */
+.orb-card {
+  background: var(--orb-card-bg);
+  border: 1px solid var(--orb-border);
+  border-radius: var(--orb-radius);
+  box-shadow: var(--orb-shadow);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Header & Meta */
+.orb-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--orb-border);
+  padding-bottom: 0.75rem;
+}
+
+.orb-title-area {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.orb-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  background: var(--orb-primary-light);
+  color: var(--orb-primary);
+  border: 1px solid currentColor;
+}
+
+.orb-status {
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--orb-text-muted);
+}
+
+.orb-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+}
+
+.orb-status-dot.locked {
+  background: #f43f5e;
+}
+
+/* Canvas Stage */
+.orb-canvas-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 14;
+  max-height: 560px;
+  background: #fcfdfe;
+  border: 1.5px solid var(--orb-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .orb-canvas-container {
+    background: #090d16;
+  }
+}
+
+.orb-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+
+/* Start Flash Overlay */
+.orb-flash-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, var(--orb-flash), transparent);
+  opacity: 0;
+  transition: opacity 0.08s ease-out;
+}
+
+.orb-flash-overlay.active {
+  opacity: 0.85;
+}
+
+/* Locked Overlay */
+.orb-locked-screen {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  text-align: center;
+  gap: 1rem;
+  z-index: 20;
+}
+
+@media (prefers-color-scheme: dark) {
+  .orb-locked-screen {
+    background: rgba(15, 23, 42, 0.95);
+  }
+}
+
+.orb-locked-icon {
+  width: 48px;
+  height: 48px;
+  color: #f43f5e;
+}
+
+/* Static Dot-Dash Strip (Accessibility: prefers-reduced-motion) */
+.orb-static-strip {
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--orb-card-bg);
+  border: 1px solid var(--orb-border);
+  border-radius: 12px;
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+.orb-static-strip.visible {
+  display: flex;
+}
+
+.orb-strip-legend {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: var(--orb-text-muted);
+  border-bottom: 1px solid var(--orb-border);
+  padding-bottom: 0.5rem;
+}
+
+.orb-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.orb-strip-timeline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.orb-strip-unit {
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  padding: 0 0.5rem;
+  border: 2px solid currentColor;
+}
+
+.orb-strip-unit.dot {
+  width: 36px;
+  background: var(--orb-wave-active);
+  color: #ffffff;
+  border-color: #8c3b09;
+}
+
+.orb-strip-unit.dash {
+  width: 90px;
+  background: var(--orb-wave-active);
+  color: #ffffff;
+  border-color: #8c3b09;
+}
+
+.orb-strip-unit.letter-gap {
+  width: 36px;
+  height: 24px;
+  background: transparent;
+  color: var(--orb-text-muted);
+  border: 1.5px dashed var(--orb-border);
+  font-size: 0.75rem;
+}
+
+.orb-strip-unit.word-gap {
+  width: 60px;
+  height: 24px;
+  background: transparent;
+  color: var(--orb-text-muted);
+  border: 1.5px dashed var(--orb-border);
+  font-size: 0.75rem;
+}
+
+/* Controls Toolbar */
+.orb-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.orb-slider-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.orb-slider-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--orb-text);
+  min-width: 140px;
+}
+
+.orb-slider-val {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--orb-primary);
+}
+
+.orb-slider-input {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--orb-border);
+  outline: none;
+  cursor: pointer;
+  accent-color: var(--orb-primary);
+  min-height: 44px; /* Accessible touch target */
+}
+
+/* Button Group */
+.orb-button-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.orb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1px solid var(--orb-border);
+  background: var(--orb-card-bg);
+  color: var(--orb-text);
+  cursor: pointer;
+  min-height: 44px; /* Accessible touch target */
+  transition: all 0.15s ease;
+}
+
+.orb-btn:hover {
+  background: var(--orb-primary-light);
+  border-color: var(--orb-primary);
+  color: var(--orb-primary);
+}
+
+.orb-btn:focus-visible {
+  outline: 3px solid var(--orb-primary);
+  outline-offset: 2px;
+}
+
+.orb-btn.primary {
+  background: var(--orb-primary);
+  border-color: var(--orb-primary);
+  color: #ffffff;
+}
+
+.orb-btn.primary:hover {
+  filter: brightness(1.1);
+}
+
+/* Audio & Reduced Motion status pill */
+.orb-info-row {
+  font-size: 0.75rem;
+  color: var(--orb-text-muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

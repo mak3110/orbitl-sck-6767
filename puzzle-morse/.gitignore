@@ -1,0 +1,5 @@
+node_modules/
+logs/*.log
+.orbitl-repo/
+.DS_Store
+Thumbs.db

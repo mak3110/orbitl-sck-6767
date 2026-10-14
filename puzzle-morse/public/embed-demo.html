@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orb-Signal | Embed Integration Demo</title>
+  <link rel="stylesheet" href="/orb-signal.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem 1rem;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f1f5f9;
+      color: #0f172a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .demo-header {
+      max-width: 520px;
+      width: 100%;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-header">
+    <h2>Minimal Parent Site Embed Example</h2>
+    <p style="color: #64748b; font-size: 0.9rem;">
+      This page demonstrates dropping <code>&lt;orb-signal&gt;</code> into any parent website with just two tags.
+    </p>
+  </div>
+
+  <!-- THE INTEGRATABLE WEB COMPONENT -->
+  <orb-signal speed="600" api="/api/signal"></orb-signal>
+
+  <script src="/orb-signal.js"></script>
+</body>
+</html>

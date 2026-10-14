@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orb-Signal | School Scavenger Hunt</title>
+  <meta name="description" content="Orb-Signal puzzle chamber for the school scavenger hunt. Decipher the vertical Morse transmission to proceed.">
+  <link rel="stylesheet" href="/orb-signal.css">
+  <style>
+    /* Scavenger Hunt Parent Website Theme */
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f1f5f9;
+      color: #0f172a;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #0b0f19;
+        color: #f8fafc;
+      }
+    }
+
+    /* Top Navigation Bar */
+    .hunt-nav {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .hunt-nav {
+        background: #111827;
+        border-bottom-color: #1f2937;
+      }
+    }
+
+    .hunt-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #0b6176;
+    }
+
+    .hunt-stage-pill {
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      background: #e0f2f7;
+      color: #0b6176;
+    }
+
+    /* Main Container */
+    .hunt-container {
+      max-width: 960px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    @media (min-width: 860px) {
+      .hunt-container {
+        grid-template-columns: 1fr 340px;
+        align-items: start;
+      }
+    }
+
+    /* Instructions & Clues Panel */
+    .hunt-panel {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .hunt-panel {
+        background: #1e293b;
+        border-color: #334155;
+      }
+    }
+
+    .hunt-panel h1, .hunt-panel h2 {
+      margin-top: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .hunt-rule-list {
+      padding-left: 1.25rem;
+      margin: 0.75rem 0;
+      font-size: 0.9rem;
+      color: #475569;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .hunt-rule-list {
+        color: #94a3b8;
+      }
+    }
+
+    .hunt-rule-list li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Team Auth / Unlock Box */
+    .hunt-auth-box {
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .hunt-auth-box {
+        border-top-color: #334155;
+      }
+    }
+
+    .hunt-input-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .hunt-input {
+      flex: 1;
+      padding: 0.6rem 0.85rem;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background: inherit;
+      color: inherit;
+      font-size: 0.9rem;
+    }
+
+    /* Code Snippet for Integrators */
+    .hunt-code-box {
+      margin-top: 1.5rem;
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 1rem;
+      border-radius: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.8rem;
+      overflow-x: auto;
+    }
+
+    /* Secret Answer Submission Tester */
+    .hunt-verify-box {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .hunt-verify-box {
+        background: #0f172a;
+        border-color: #334155;
+      }
+    }
+
+    .hunt-feedback {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: none;
+    }
+
+    .hunt-feedback.success {
+      display: block;
+      color: #059669;
+    }
+
+    .hunt-feedback.error {
+      display: block;
+      color: #dc2626;
+    }
+
+    /* Footer */
+    .hunt-footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.85rem;
+      color: #64748b;
+      border-top: 1px solid #e2e8f0;
+      margin-top: auto;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .hunt-footer {
+        border-top-color: #1f2937;
+        color: #94a3b8;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Parent Website Header -->
+  <header class="hunt-nav">
+    <div class="hunt-brand">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polygon points="12 8 8 12 12 16 16 12 12 8"></polygon>
+      </svg>
+      <span>CipherQuest Scavenger Hunt</span>
+    </div>
+    <div class="hunt-stage-pill">Stage 4: Orb-Signal</div>
+  </header>
+
+  <!-- Main Game Stage -->
+  <main class="hunt-container">
+    
+    <!-- Integratable Orb-Signal Element -->
+    <section aria-label="Puzzle Transmission Chamber">
+      <!-- Integratable Element Usage: <orb-signal speed="600" api="/api/signal"></orb-signal> -->
+      <orb-signal id="gameSignal" speed="600" api="/api/signal"></orb-signal>
+    </section>
+
+    <!-- Side Panel: Instructions & Team Unlock -->
+    <aside class="hunt-panel" aria-label="Stage Briefing">
+      <h2 style="font-size: 1.25rem;">Signal Interception</h2>
+      <p style="font-size: 0.9rem; color: #475569;">
+        A continuous radio transmission is flowing down the vertical chamber. Intercept and decode the transmission to find the secret passphrase.
+      </p>
+
+      <h3 style="font-size: 0.95rem; margin-bottom: 0.25rem;">Field Transmission Intel:</h3>
+      <ul class="hunt-rule-list">
+        <li><strong>Sine Wave (On):</strong> Active Morse pulse.</li>
+        <li><strong>Flat Line (Off):</strong> Gap between pulses or letters.</li>
+        <li><strong>Wavelength:</strong> 1 unit = 18px.</li>
+        <li><strong>Pulse Timing:</strong> Dot = 1 unit, Dash = 3 units.</li>
+        <li><strong>Gaps:</strong> Intra-letter = 1u, Inter-letter = 3u, Words = 7u.</li>
+        <li><strong>Start Signal:</strong> When the orb reaches the end, it <em>jumps back to the top and briefly flashes</em>. That jump is the <strong>ONLY</strong> start signal.</li>
+      </ul>
+
+      <!-- Team Stage Unlock Session Controller -->
+      <div class="hunt-auth-box">
+        <label for="teamInput" style="font-size: 0.85rem; font-weight: 600;">Team Authentication:</label>
+        <div class="hunt-input-row">
+          <input type="text" id="teamInput" class="hunt-input" placeholder="Enter Team Name" value="Team Alpha" />
+          <button type="button" id="btnAuthUnlock" class="orb-btn primary">Unlock</button>
+        </div>
+        <div id="authStatusMsg" style="font-size: 0.8rem; color: #64748b;">Enter team name to unlock the stage signal.</div>
+      </div>
+
+      <!-- Quick Answer Test Box for Players -->
+      <div class="hunt-verify-box">
+        <label for="passInput" style="font-size: 0.85rem; font-weight: 600;">Submit Decrypted Word:</label>
+        <div class="hunt-input-row" style="margin-top: 0.5rem;">
+          <input type="text" id="passInput" class="hunt-input" placeholder="Decoded secret..." autocomplete="off" />
+          <button type="button" id="btnVerify" class="orb-btn">Check</button>
+        </div>
+        <div id="verifyFeedback" class="hunt-feedback"></div>
+      </div>
+
+      <!-- Parent Site Integration Instructions -->
+      <div style="margin-top: 1.5rem;">
+        <details>
+          <summary style="font-size: 0.85rem; font-weight: 600; cursor: pointer; color: #0b6176;">
+            Parent Site Integration Code
+          </summary>
+          <div class="hunt-code-box">
+&lt;!-- 1. Include Stylesheet & Script --&gt;
+&lt;link rel="stylesheet" href="/orb-signal.css"&gt;
+&lt;script src="/orb-signal.js"&gt;&lt;/script&gt;
+
+&lt;!-- 2. Drop the Element anywhere --&gt;
+&lt;orb-signal speed="600" api="/api/signal"&gt;&lt;/orb-signal&gt;
+          </div>
+        </details>
+      </div>
+
+    </aside>
+
+  </main>
+
+  <footer class="hunt-footer">
+    CipherQuest Scavenger Hunt &copy; 2026. Built with Vanilla Web Components & Web APIs.
+  </footer>
+
+  <!-- Reusable Web Component Script -->
+  <script src="/orb-signal.js"></script>
+
+  <!-- Page Glue Scripts (Team Auth & Answer Verification) -->
+  <script>
+    // Team Authentication handler
+    const teamInput = document.getElementById('teamInput');
+    const btnAuthUnlock = document.getElementById('btnAuthUnlock');
+    const authStatusMsg = document.getElementById('authStatusMsg');
+    const gameSignal = document.getElementById('gameSignal');
+
+    async function checkStatus() {
+      try {
+        const res = await fetch('/api/status');
+        const data = await res.json();
+        if (data.unlocked) {
+          authStatusMsg.textContent = `Unlocked for: ${data.teamId || 'Your Team'}`;
+          authStatusMsg.style.color = '#059669';
+          btnAuthUnlock.textContent = 'Relock';
+        } else {
+          authStatusMsg.textContent = 'Stage locked. Click Unlock to authenticate.';
+          authStatusMsg.style.color = '#64748b';
+          btnAuthUnlock.textContent = 'Unlock';
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    btnAuthUnlock.addEventListener('click', async () => {
+      if (btnAuthUnlock.textContent === 'Relock') {
+        await fetch('/api/lock', { method: 'POST' });
+        await checkStatus();
+        if (gameSignal && gameSignal.fetchSignal) gameSignal.fetchSignal();
+      } else {
+        const teamId = teamInput.value.trim() || 'Team Alpha';
+        const res = await fetch('/api/unlock', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ teamId })
+        });
+        if (res.ok) {
+          await checkStatus();
+          if (gameSignal && gameSignal.fetchSignal) gameSignal.fetchSignal();
+        }
+      }
+    });
+
+    // Check status on load
+    checkStatus();
+
+    // Answer Submission Checker via Server
+    const passInput = document.getElementById('passInput');
+    const btnVerify = document.getElementById('btnVerify');
+    const verifyFeedback = document.getElementById('verifyFeedback');
+
+    btnVerify.addEventListener('click', async () => {
+      const raw = passInput.value.trim().toLowerCase().replace(/[^a-z]/g, '');
+      if (!raw) return;
+
+      try {
+        const res = await fetch('/api/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ answer: raw })
+        });
+        const data = await res.json();
+        if (data.correct) {
+          verifyFeedback.className = 'hunt-feedback success';
+          verifyFeedback.textContent = '🎉 Correct! Stage 4 Cleared!';
+        } else {
+          verifyFeedback.className = 'hunt-feedback error';
+          verifyFeedback.textContent = '❌ Incorrect passphrase. Keep tracking the wave!';
+        }
+      } catch (err) {
+        verifyFeedback.className = 'hunt-feedback error';
+        verifyFeedback.textContent = 'Network error checking answer.';
+      }
+    });
+
+    passInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') btnVerify.click();
+    });
+  </script>
+
+</body>
+</html>
